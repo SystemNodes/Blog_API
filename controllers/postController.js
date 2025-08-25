@@ -1,4 +1,4 @@
-const {post, like} = require('../models');
+const {post, like, comment} = require('../models');
 
 exports.createPost = async(req, res)=>{
     try{
@@ -91,4 +91,24 @@ exports.deletePost = async (req, res) => {
       });
     }
   };
-  
+
+  exports.getAllAndLikes = async(req,res)=>{
+    try{
+      const data = await post.findAll({
+        include: [
+          { model: like, as: "All Likes" },
+          { model: comment, as: "All Comments" }
+        ]
+      })
+      res.status(200).json({
+        message: `All info retrieved`,
+        data
+      })
+    }catch(err){
+      res.status(500).json({
+        message: "Internal server error",
+        error: err.message
+      });
+    }
+  };
+
