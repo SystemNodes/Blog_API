@@ -80,12 +80,13 @@ exports.deleteComment = async (req, res) => {
 
 exports.getAllComments = async(req,res)=>{
   try{
-    const data = await Comment.findAll()
+    const data = await Comment.findAll({
+      include: "All Posts"
+    });
     res.status(200).json({
       message: `All info retrieved`,
       data
-    })
-
+    });
   }catch(err){
     res.status(500).json({
       message: "Internal server error",
